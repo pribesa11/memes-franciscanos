@@ -1,3 +1,4 @@
+
 const memes = [
     "memes/meme01.jpg",
     "memes/meme02.jpg",
@@ -7,18 +8,12 @@ const memes = [
 ];
 
 
-const songs = [
-    "https://open.spotify.com/intl-es/track/4jMwQaDiDICry8Ia1gFnAn?si=727bddaad2ab4256",
-    "https://open.spotify.com/intl-es/track/1cgBWgoL6520lR2QZDzdGN?si=5cb163c31a1741fa",
-    "https://open.spotify.com/intl-es/track/2KXEE2MsPZLmT38XiyAOpH?si=d362cfb472e44b94"
-];
-
-
 const memeElement = document.getElementById("meme");
 const spotifyPlayer = document.getElementById("spotify-player");
 const randomButton = document.getElementById("random-button");
 
 
+let songs = [];
 let previousMeme = -1;
 let previousSong = -1;
 
@@ -41,13 +36,17 @@ function randomDifferent(array, previous) {
 
 function getSpotifyId(url) {
 
-    return url
-        .split("/track/")[1]
-        .split("?")[0];
+    const match = url.match(/\/track\/([a-zA-Z0-9]+)/);
+
+    return match ? match[1] : null;
 }
 
 
 function generateSurprise() {
+
+    if (memes.length === 0 || songs.length === 0) {
+        return;
+    }
 
     const memeIndex =
         randomDifferent(memes, previousMeme);
@@ -66,8 +65,12 @@ function generateSurprise() {
 
     // Mostrar canción de Spotify
     const spotifyId =
-        getSpotifyId(songs[songIndex]);
+        getSpotifyId(songs[songIndex].url);
 
+    if (!spotifyId) {
+        console.error("No se pudo obtener el ID de Spotify.");
+        return;
+    }
 
     spotifyPlayer.innerHTML = `
         <iframe
@@ -82,12 +85,39 @@ function generateSurprise() {
 }
 
 
-// Botón
-randomButton.addEventListener(
-    "click",
-    generateSurprise
-);
+// Cargar canciones desde songs.json
+async function initializePage() {
+
+    randomButton.disabled = true;
+
+    try {
+        const response = await fetch("taeminsongs.json");
+
+        if (!response.ok) {
+            throw new Error("No se pudo cargar taeminsongs.json");
+        }
+
+        songs = await response.json();
+
+        if (!Array.isArray(songs) || songs.length === 0) {
+            throw new Error("La lista de canciones está vacía.");
+        }
+
+        randomButton.disabled = false;
+        generateSurprise();
+
+    } catch (error) {
+        console.error("Error al cargar las canciones:", error);
+
+        spotifyPlayer.textContent =
+            "No se pudieron cargar las canciones. Recarga la página e inténtalo de nuevo.";
+    }
+}
 
 
-// Primera combinación
-generateSurprise();
+// Cambiar meme y canción con el botón
+randomButton.addEventListener("click", generateSurprise);
+
+
+// Iniciar página
+initializePage();

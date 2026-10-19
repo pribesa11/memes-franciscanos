@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap');
+
 * {
     box-sizing: border-box;
 }
@@ -10,14 +13,14 @@ body {
     justify-content: center;
     align-items: center;
 
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
 
     background:
-    linear-gradient(
-        rgba(0,0,0,0.35),
-        rgba(0,0,0,0.35)
-    ),
-    url("fondo.jpg");
+        linear-gradient(
+            rgba(0, 0, 0, 0.35),
+            rgba(0, 0, 0, 0.35)
+        ),
+        url("fondo.jpg");
 
     background-size: cover;
     background-position: center;
@@ -47,24 +50,40 @@ body {
     border-radius: 28px;
 
     /* Sombra */
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 
-    /* Para poder agregar textura */
+    /* Permite agregar textura */
     position: relative;
     overflow: hidden;
 }
 
+/* Título principal */
 h1 {
     margin-top: 0;
     margin-bottom: 10px;
 
-    font-size: 32px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    line-height: 1.2;
+}
+
+/* Otros títulos */
+h2,
+h3 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
 }
 
 .subtitle {
     margin-top: 0;
     margin-bottom: 25px;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
 
     color: #666;
 }
@@ -89,8 +108,7 @@ h1 {
 
     border-radius: 14px;
 
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.20);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
 }
 
 .music-section {
@@ -100,8 +118,10 @@ h1 {
 #song-title {
     margin-bottom: 12px;
 
-    font-size: 18px;
-    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
 #spotify-player {
@@ -112,20 +132,21 @@ h1 {
     border-radius: 12px;
 }
 
+/* Botones */
 button {
     width: 100%;
 
     min-height: 52px;
 
     margin-top: 14px;
-
     padding: 14px 20px;
 
     border: none;
     border-radius: 12px;
 
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 700;
 
     cursor: pointer;
 
@@ -142,15 +163,26 @@ button:active {
     transform: translateY(0);
 }
 
+button:focus-visible {
+    outline: 3px solid #777;
+    outline-offset: 3px;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
 #random-button {
     background: #222;
     color: white;
 }
 
+/* Ajustes para móviles */
 @media (max-width: 600px) {
-
     body {
         padding: 10px;
+        background-attachment: scroll;
     }
 
     .container {
@@ -159,7 +191,8 @@ button:active {
     }
 
     h1 {
-        font-size: 26px;
+        font-size: 30px;
+        letter-spacing: 1.5px;
     }
 
     #meme {
@@ -169,5 +202,17 @@ button:active {
     button {
         min-height: 56px;
         font-size: 16px;
+    }
+}
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    button {
+        transition: none;
+    }
+
+    button:hover,
+    button:active {
+        transform: none;
     }
 }
